@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BetterRoutine</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #eaf4ff, #ffffff);
+      color: #1f2937;
+    }
+
+    .app {
+      max-width: 500px;
+      min-height: 100vh;
+      margin: auto;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      background: #2583e9;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 30px auto 25px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 34px;
+      margin: 0;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      font-size: 16px;
+      margin: 12px 0 30px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    .description {
+      line-height: 1.7;
+      color: #64748b;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #2583e9;
+      color: white;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #176dcc;
+    }
+
+    .secondary {
+      background: #eaf4ff;
+      color: #2583e9;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #dbe3ec;
+      border-radius: 12px;
+      margin-top: 8px;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .routine-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 13px 0;
+      border-bottom: 1px solid #edf1f5;
+    }
+
+    .routine-item:last-child {
+      border-bottom: none;
+    }
+
+    .time {
+      font-weight: bold;
+      color: #2583e9;
+      width: 70px;
+    }
+
+    .activity {
+      flex: 1;
+    }
+
+    .ai-message {
+      background: #eef6ff;
+      padding: 15px;
+      border-radius: 15px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #eaf4ff;
+      color: #2583e9;
+      padding: 7px 12px;
+      border-radius: 20px;
+      margin: 4px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="logo">🌱</div>
+
+    <h1>BetterRoutine</h1>
+
+    <p class="subtitle">
+      Build a better week with AI.
+    </p>
+
+    <div class="card">
+      <p class="description">
+        Tell us about your current routine and your goals.
+        AI will create a personalized routine that you can
+        adjust together.
+      </p>
+
+      <button onclick="showPage('routine')">
+        Get Started →
+      </button>
+    </div>
+  </section>
+
+
+  <!-- CURRENT ROUTINE -->
+  <section id="routine" class="hidden">
+
+    <h1>Your Current Routine</h1>
+
+    <p class="subtitle">
+      Tell us what your normal day looks like.
+    </p>
+
+    <div class="card">
+
+      <label>Wake up</label>
+      <input type="time" id="wakeUp" value="06:30">
+
+      <label>School / Work</label>
+      <input type="text" id="school" placeholder="Example: School 8:00 - 15:00">
+
+      <label>After school / work</label>
+      <input type="text" id="afterSchool" placeholder="Example: Sports 16:00 - 18:00">
+
+      <label>Homework / Study</label>
+      <input type="text" id="study" placeholder="Example: Homework 19:00 - 20:00">
+
+      <label>Free time</label>
+      <input type="text" id="freeTime" placeholder="Example: Games 20:00 - 21:30">
+
+      <label>Sleep</label>
+      <input type="time" id="sleep" value="23:00">
+
+      <button onclick="showPage('goals')">
+        Next →
+      </button>
+
+    </div>
+  </section>
+
+
+  <!-- GOALS -->
+  <section id="goals" class="hidden">
+
+    <h1>Your Goals</h1>
+
+    <p class="subtitle">
+      What would you like to improve?
+    </p>
+
+    <div class="card">
+
+      <span class="tag">😴 More sleep</span>
+      <span class="tag">📚 Study more</span>
+      <span class="tag">🎮 More free time</span>
+      <span class="tag">🏃 Exercise</span>
+      <span class="tag">📱 Less screen time</span>
+
+      <h2>Tell AI what you want</h2>
+
+      <textarea id="goal"
+        placeholder="Example: I want more sleep but I still want enough time for games."></textarea>
+
+      <button onclick="createRoutine()">
+        🤖 Create My Routine
+      </button>
+
+    </div>
+  </section>
+
+
+  <!-- AI SUGGESTION -->
+  <section id="suggestion" class="hidden">
+
+    <h1>AI Suggested Routine</h1>
+
+    <p class="subtitle">
+      Here's a new routine based on your information.
+    </p>
+
+    <div class="ai-message">
+      🤖 I created this routine based on your current
+      schedule and your goals. You can change anything you
+      don't like.
+    </div>
+
+    <div class="card">
+
+      <div class="routine-item">
+        <span class="time">06:30</span>
+        <span class="activity">☀️ Wake up</span>
+      </div>
+
+      <div class="routine-item">
+        <span class="time">07:00</span>
+        <span class="activity">🍳 Breakfast & Get Ready</span>
+      </div>
+
+      <div class="routine-item">
+        <span class="time">08:00</span>
+        <span class="activity">🏫 School</span>
+      </div>
+
+      <div class="routine-item">
+        <span class="time">15:30</span>
+        <span class="activity">☕ Break</span>
+      </div>
+
+      <div class="routine-item">
+        <span class="time">16:00</span>
+        <span class="activity">📚 Homework</span>
+      </div>
+
+      <div class="routine-item">
+        <span class="time">17:30</span>
+        <span class="activity">🎮 Free Time</span>
+      </div>
+
+      <div class="routine-item">
+        <span class="time">19:00</span>
+        <span class="activity">🍽️ Dinner</span>
+      </div>
+
+      <div class="routine-item">
+        <span class="time">20:00</span>
+        <span class="activity">🏃 Sports / Hobby</span>
+      </div>
+
+      <div class="routine-item">
+        <span class="time">21:30</span>
+        <span class="activity">📖 Prepare for tomorrow</span>
+      </div>
+
+      <div class="routine-item">
+        <span class="time">22:30</span>
+        <span class="activity">🌙 Sleep</span>
+      </div>
+
+    </div>
+
+    <button onclick="showPage('chat')">
+      💬 I want to change something
+    </button>
+
+    <button class="secondary" onclick="showPage('explanation')">
+      Why did AI make these changes?
+    </button>
+
+  </section>
+
+
+  <!-- EXPLANATION -->
+  <section id="explanation" class="hidden">
+
+    <h1>Why these changes?</h1>
+
+    <div class="card">
+
+      <div class="ai-message">
+        🌙 <b>Earlier bedtime</b><br>
+        This can give you more time to sleep.
+      </div>
+
+      <div class="ai-message">
+        📚 <b>Homework after school</b><br>
+        Finishing important work earlier leaves more free time later.
+      </div>
+
+      <div class="ai-message">
+        ☕ <b>Added a short break</b><br>
+        A break can help you recover before the next activity.
+      </div>
+
+    </div>
+
+    <button onclick="showPage('chat')">
+      Discuss this plan →
+    </button>
+
+  </section>
+
+
+  <!-- CHAT -->
+  <section id="chat" class="hidden">
+
+    <h1>Chat with AI</h1>
+
+    <div class="card">
+
+      <div class="ai-message">
+        🤖 What would you like to change about your routine?
+      </div>
+
+      <textarea id="message"
+        placeholder="Example: I want more free time after school."></textarea>
+
+      <button onclick="replyAI()">
+        Send
+      </button>
+
+      <div id="reply" class="ai-message hidden"></div>
+
+    </div>
+
+  </section>
+
+</div>
+
+
+<script>
+
+function showPage(page) {
+
+  const pages = [
+    "home",
+    "routine",
+    "goals",
+    "suggestion",
+    "explanation",
+    "chat"
+  ];
+
+  pages.forEach(function(id) {
+    document.getElementById(id).classList.add("hidden");
+  });
+
+  document.getElementById(page).classList.remove("hidden");
+
+  window.scrollTo(0, 0);
+}
+
+
+function createRoutine() {
+
+  showPage("suggestion");
+
+}
+
+
+function replyAI() {
+
+  const message = document.getElementById("message").value;
+  const reply = document.getElementById("reply");
+
+  if (message.trim() === "") {
+    return;
+  }
+
+  reply.classList.remove("hidden");
+
+  reply.innerHTML =
+    "🤖 OK! I understand. I'll adjust the routine based on your request.<br><br>" +
+    "<b>Your request:</b> " + message +
+    "<br><br>For the next version, we can move activities around while keeping your important commitments.";
+
+}
+
+</script>
+
+</body>
+</html>
