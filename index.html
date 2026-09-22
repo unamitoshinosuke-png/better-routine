@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>BetterRoutine</title>
 
 <style>
@@ -18,15 +19,16 @@ body {
 }
 
 .app {
-  max-width: 520px;
-  min-height: 100vh;
+  max-width: 550px;
   margin: auto;
+  min-height: 100vh;
   padding: 25px 20px 50px;
 }
 
 .logo {
   width: 70px;
   height: 70px;
+  margin: 20px auto;
   border-radius: 22px;
   background: #2583e9;
   color: white;
@@ -34,32 +36,29 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 32px;
-  margin: 25px auto 20px;
 }
 
 h1 {
   text-align: center;
   font-size: 30px;
-  margin: 10px 0;
+}
+
+h2 {
+  margin-top: 0;
 }
 
 .subtitle {
   text-align: center;
   color: #64748b;
   line-height: 1.6;
-  margin-bottom: 25px;
 }
 
 .card {
   background: white;
-  border-radius: 20px;
   padding: 22px;
-  margin-bottom: 18px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-}
-
-.card h2 {
-  margin-top: 0;
+  border-radius: 20px;
+  margin-top: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,.08);
 }
 
 label {
@@ -70,45 +69,34 @@ label {
 }
 
 input,
-textarea,
-select {
+textarea {
   width: 100%;
   padding: 13px;
   border: 1px solid #dbe3ec;
   border-radius: 12px;
   font-size: 15px;
-  background: white;
 }
 
 textarea {
-  min-height: 110px;
+  min-height: 120px;
   resize: vertical;
 }
 
 button {
   width: 100%;
-  border: none;
+  border: 0;
   border-radius: 14px;
   padding: 15px;
+  margin-top: 18px;
+  background: #2583e9;
+  color: white;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  background: #2583e9;
-  color: white;
-  margin-top: 15px;
 }
 
 button:hover {
   background: #176dcc;
-}
-
-.secondary {
-  background: #eaf4ff;
-  color: #2583e9;
-}
-
-.hidden {
-  display: none;
 }
 
 .option-grid {
@@ -118,12 +106,11 @@ button:hover {
 }
 
 .option {
-  padding: 15px;
+  padding: 16px;
   border: 2px solid #e5e7eb;
   border-radius: 15px;
   text-align: center;
   cursor: pointer;
-  background: white;
   font-weight: bold;
 }
 
@@ -134,9 +121,6 @@ button:hover {
 }
 
 .goal {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   padding: 13px;
   margin: 8px 0;
   border: 1px solid #e5e7eb;
@@ -145,65 +129,38 @@ button:hover {
 
 .goal input {
   width: auto;
+  margin-right: 8px;
 }
 
-.routine-item {
-  display: flex;
-  gap: 15px;
-  padding: 14px 0;
-  border-bottom: 1px solid #edf1f5;
+.routine {
+  white-space: pre-wrap;
+  line-height: 1.8;
+  background: #f7fbff;
+  padding: 18px;
+  border-radius: 15px;
 }
 
-.routine-item:last-child {
-  border-bottom: none;
-}
-
-.time {
-  color: #2583e9;
-  font-weight: bold;
-  min-width: 55px;
-}
-
-.activity {
-  flex: 1;
-}
-
-.ai-message {
+.ai {
   background: #eef6ff;
   padding: 16px;
   border-radius: 15px;
   line-height: 1.7;
-  margin-bottom: 15px;
 }
 
-.tag {
-  display: inline-block;
-  padding: 7px 11px;
-  background: #eaf4ff;
-  color: #2583e9;
-  border-radius: 20px;
-  margin: 3px;
-  font-size: 13px;
+.hidden {
+  display: none;
 }
 
-.success {
+.loading {
   text-align: center;
-  background: #eefbf3;
-  padding: 18px;
-  border-radius: 15px;
-  color: #16834b;
-  margin-bottom: 15px;
+  padding: 25px;
 }
 
-.back {
-  background: transparent;
-  color: #64748b;
-  margin-top: 5px;
-}
-
-.small {
-  font-size: 13px;
-  color: #64748b;
+.error {
+  background: #fff1f1;
+  color: #c62828;
+  padding: 15px;
+  border-radius: 12px;
 }
 </style>
 </head>
@@ -213,371 +170,258 @@ button:hover {
 <div class="app">
 
 <!-- HOME -->
+
 <section id="home">
 
-  <div class="logo">🌱</div>
+<div class="logo">🌱</div>
 
-  <h1>BetterRoutine</h1>
+<h1>BetterRoutine</h1>
 
-  <p class="subtitle">
-    Build a better week with AI.<br>
-    AIと一緒に、自分に合った1週間を作ろう。
-  </p>
+<p class="subtitle">
+AIと一緒に、あなたに合った<br>
+1週間のルーティーンを作ろう。
+</p>
 
-  <div class="card">
+<div class="card">
 
-    <p>
-      今の生活を簡単に入力してください。
-      AIがあなたに合った新しいルーティーンを考えます。
-    </p>
+<p>
+今の生活を簡単に入力するだけ。<br>
+AIがあなたの生活を考えて、新しいルーティーンを提案します。
+</p>
 
-    <button onclick="showPage('profile')">
-      Get Started →
-    </button>
+<button onclick="show('profile')">
+Get Started →
+</button>
 
-  </div>
+</div>
 
 </section>
 
 
 <!-- PROFILE -->
+
 <section id="profile" class="hidden">
 
-  <h1>あなたについて</h1>
+<h1>あなたについて</h1>
 
-  <p class="subtitle">
-    まず、あなたの生活について教えてください。
-  </p>
+<p class="subtitle">
+まず、あなたの生活について教えてください。
+</p>
 
-  <div class="card">
+<div class="card">
 
-    <h2>あなたは？</h2>
+<h2>あなたは？</h2>
 
-    <div class="option-grid">
+<div class="option-grid">
 
-      <div class="option" onclick="selectType(this,'student')">
-        🎒<br>学生
-      </div>
+<div class="option"
+onclick="chooseType(this,'学生')">
+🎒<br>学生
+</div>
 
-      <div class="option" onclick="selectType(this,'worker')">
-        💼<br>社会人
-      </div>
+<div class="option"
+onclick="chooseType(this,'社会人')">
+💼<br>社会人
+</div>
 
-      <div class="option" onclick="selectType(this,'other')">
-        🏠<br>その他
-      </div>
+<div class="option"
+onclick="chooseType(this,'その他')">
+🏠<br>その他
+</div>
 
-    </div>
+</div>
 
-    <label>普段起きる時間</label>
-    <input type="time" id="wake" value="06:30">
+<label>起きる時間</label>
+<input type="time" id="wake" value="06:30">
 
-    <label>普段寝る時間</label>
-    <input type="time" id="sleep" value="22:30">
+<label>寝る時間</label>
+<input type="time" id="sleep" value="22:30">
 
-    <button onclick="showPage('mainSchedule')">
-      次へ →
-    </button>
+<button onclick="show('life')">
+次へ →
+</button>
 
-  </div>
+</div>
 
 </section>
 
 
-<!-- MAIN SCHEDULE -->
-<section id="mainSchedule" class="hidden">
+<!-- LIFE -->
 
-  <h1>普段の生活</h1>
+<section id="life" class="hidden">
 
-  <p class="subtitle">
-    細かく入力する必要はありません。
-  </p>
+<h1>普段の生活</h1>
 
-  <div class="card">
+<p class="subtitle">
+細かく入力しなくても大丈夫。
+</p>
 
-    <label id="mainLabel">学校・仕事</label>
+<div class="card">
 
-    <input
-      type="text"
-      id="mainActivity"
-      placeholder="例：学校 8:00〜15:30"
-    >
+<label id="mainLabel">
+学校・仕事
+</label>
 
-    <label>通学・通勤</label>
+<input
+id="mainSchedule"
+placeholder="例：学校 8:00〜15:30">
 
-    <input
-      type="text"
-      id="commute"
-      placeholder="例：片道30分"
-    >
+<label>通学・通勤</label>
 
-    <label>普段やっていること</label>
+<input
+id="commute"
+placeholder="例：片道30分">
 
-    <textarea
-      id="activities"
-      placeholder="例：
+<label>普段やっていること</label>
+
+<textarea
+id="activities"
+placeholder="例：
 テニス 月・水・金
 宿題 毎日1時間
 ゲーム 1〜2時間
 夕食
-お風呂"
-    ></textarea>
+お風呂"></textarea>
 
-    <p class="small">
-      思いつくものをざっくり書くだけでOK。
-    </p>
+<button onclick="show('goals')">
+次へ →
+</button>
 
-    <button onclick="showPage('goals')">
-      次へ →
-    </button>
-
-  </div>
+</div>
 
 </section>
 
 
 <!-- GOALS -->
+
 <section id="goals" class="hidden">
 
-  <h1>何を改善したい？</h1>
+<h1>何を改善したい？</h1>
 
-  <p class="subtitle">
-    複数選択できます。
-  </p>
+<p class="subtitle">
+当てはまるものを選んでください。
+</p>
 
-  <div class="card">
+<div class="card">
 
-    <label class="goal">
-      <input type="checkbox" value="sleep">
-      😴 睡眠を増やしたい
-    </label>
+<label class="goal">
+<input type="checkbox" value="睡眠を増やす">
+😴 睡眠を増やしたい
+</label>
 
-    <label class="goal">
-      <input type="checkbox" value="study">
-      📚 勉強時間を増やしたい
-    </label>
+<label class="goal">
+<input type="checkbox" value="勉強時間を増やす">
+📚 勉強時間を増やしたい
+</label>
 
-    <label class="goal">
-      <input type="checkbox" value="exercise">
-      🏃 運動する時間を増やしたい
-    </label>
+<label class="goal">
+<input type="checkbox" value="運動する">
+🏃 運動する時間を増やしたい
+</label>
 
-    <label class="goal">
-      <input type="checkbox" value="free">
-      🎮 自由時間がほしい
-    </label>
+<label class="goal">
+<input type="checkbox" value="自由時間を増やす">
+🎮 自由時間がほしい
+</label>
 
-    <label class="goal">
-      <input type="checkbox" value="screen">
-      📱 スマホ時間を減らしたい
-    </label>
+<label class="goal">
+<input type="checkbox" value="スマホ時間を減らす">
+📱 スマホ時間を減らしたい
+</label>
 
-    <label class="goal">
-      <input type="checkbox" value="morning">
-      ☀️ 朝の時間を有効にしたい
-    </label>
+<label class="goal">
+<input type="checkbox" value="朝を有効活用する">
+☀️ 朝の時間を有効にしたい
+</label>
 
-    <label>その他</label>
+<label>その他の希望</label>
 
-    <textarea
-      id="otherGoal"
-      placeholder="例：もっと余裕のある生活にしたい"
-    ></textarea>
+<textarea
+id="otherGoal"
+placeholder="例：もっと余裕のある生活にしたい"></textarea>
 
-    <button onclick="createRoutine()">
-      🤖 AIにルーティーンを作ってもらう
-    </button>
+<button onclick="generateRoutine()">
+🤖 AIにルーティーンを作ってもらう
+</button>
 
-  </div>
+</div>
 
 </section>
 
 
-<!-- AI SUGGESTION -->
-<section id="suggestion" class="hidden">
+<!-- AI RESULT -->
 
-  <h1>AIの提案</h1>
+<section id="result" class="hidden">
 
-  <p class="subtitle">
-    あなたの情報をもとに、新しいルーティーンを考えました。
-  </p>
+<h1>🤖 AIの提案</h1>
 
-  <div class="ai-message">
+<p class="subtitle">
+あなたの生活をもとにAIが考えました。
+</p>
 
-    🤖 <b>AIからの提案</b><br><br>
+<div class="card">
 
-    今の生活を大きく変えすぎず、
-    「睡眠・重要な予定・自由時間」のバランスを
-    考えて組み直しました。
-    
-  </div>
+<div id="loading" class="loading">
 
-  <div class="card">
+AIがルーティーンを考えています...<br>
+⏳
 
-    <div class="routine-item">
-      <span class="time">06:30</span>
-      <span class="activity">☀️ 起床</span>
-    </div>
+</div>
 
-    <div class="routine-item">
-      <span class="time">07:00</span>
-      <span class="activity">🍳 朝食・準備</span>
-    </div>
+<div id="resultText" class="routine hidden"></div>
 
-    <div class="routine-item">
-      <span class="time">08:00</span>
-      <span class="activity">🏫 学校・仕事</span>
-    </div>
+</div>
 
-    <div class="routine-item">
-      <span class="time">15:30</span>
-      <span class="activity">☕ 休憩</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">16:00</span>
-      <span class="activity">📚 勉強・重要な予定</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">17:30</span>
-      <span class="activity">🎮 自由時間</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">19:00</span>
-      <span class="activity">🍽️ 夕食</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">20:00</span>
-      <span class="activity">🏃 趣味・運動</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">21:30</span>
-      <span class="activity">📖 明日の準備</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">22:30</span>
-      <span class="activity">🌙 就寝</span>
-    </div>
-
-  </div>
-
-  <button onclick="showPage('chat')">
-    💬 このルーティーンについて相談する
-  </button>
+<button onclick="show('chat')">
+💬 このルーティーンについて相談する
+</button>
 
 </section>
 
 
 <!-- CHAT -->
+
 <section id="chat" class="hidden">
 
-  <h1>AIと相談</h1>
+<h1>AIと相談</h1>
 
-  <p class="subtitle">
-    気に入らないところを自由に伝えてください。
-  </p>
+<p class="subtitle">
+「ここを変えたい」と自由に伝えてください。
+</p>
 
-  <div class="card">
+<div class="card">
 
-    <div class="ai-message">
-      🤖 どこを変更したいですか？
-      <br><br>
-      例えば「自由時間を増やしたい」
-      「もっと遅く起きたい」などでOKです。
-    </div>
+<div class="ai">
 
-    <textarea
-      id="changeRequest"
-      placeholder="例：17時からの自由時間をもっと長くしたい"
-    ></textarea>
+🤖 例えば、
 
-    <button onclick="changeRoutine()">
-      AIに修正してもらう
-    </button>
+「ゲームの時間を増やしたい」<br>
+「もっと早く寝たい」<br>
+「勉強時間を30分増やしたい」
 
-    <div id="aiReply" class="hidden"></div>
+など、普通に話しかけてOKです。
 
-  </div>
+</div>
 
-</section>
+<label>変更したいこと</label>
 
+<textarea
+id="change"
+placeholder="例：自由時間をもう少し増やしたい"></textarea>
 
-<!-- FINAL -->
-<section id="final" class="hidden">
+<button onclick="reviseRoutine()">
+AIに修正してもらう
+</button>
 
-  <h1>✨ 完成！</h1>
+<div id="chatLoading"
+class="loading hidden">
+AIがルーティーンを修正しています...<br>
+⏳
+</div>
 
-  <p class="subtitle">
-    あなたとAIで作ったルーティーンです。
-  </p>
+<div id="revised" class="routine hidden"></div>
 
-  <div class="success">
-    このルーティーンを自分の生活に合わせて
-    さらに変更することもできます。
-  </div>
-
-  <div class="card">
-
-    <div class="routine-item">
-      <span class="time">06:30</span>
-      <span class="activity">☀️ 起床</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">07:00</span>
-      <span class="activity">🍳 朝食・準備</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">08:00</span>
-      <span class="activity">🏫 学校・仕事</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">15:30</span>
-      <span class="activity">☕ 休憩</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">16:00</span>
-      <span class="activity">📚 勉強</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">17:30</span>
-      <span class="activity">🎮 自由時間</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">19:00</span>
-      <span class="activity">🍽️ 夕食</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">20:00</span>
-      <span class="activity">🏃 趣味・運動</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">21:30</span>
-      <span class="activity">📖 明日の準備</span>
-    </div>
-
-    <div class="routine-item">
-      <span class="time">22:30</span>
-      <span class="activity">🌙 就寝</span>
-    </div>
-
-  </div>
-
-  <button onclick="showPage('home')">
-    最初から作り直す
-  </button>
+</div>
 
 </section>
 
@@ -586,101 +430,317 @@ button:hover {
 
 <script>
 
+const WORKER_URL =
+"https://better-routine-ai.unami-toshinosuke.workers.dev/";
+
 let userType = "";
 
-
-function showPage(page) {
-
-  const pages = [
-    "home",
-    "profile",
-    "mainSchedule",
-    "goals",
-    "suggestion",
-    "chat",
-    "final"
-  ];
-
-  pages.forEach(function(id) {
-    document.getElementById(id).classList.add("hidden");
-  });
-
-  document.getElementById(page).classList.remove("hidden");
-
-  window.scrollTo(0, 0);
-}
+let originalRoutine = "";
 
 
-function selectType(element, type) {
+function show(id) {
 
-  document.querySelectorAll(".option").forEach(function(option) {
-    option.classList.remove("selected");
-  });
+const sections = [
+"home",
+"profile",
+"life",
+"goals",
+"result",
+"chat"
+];
 
-  element.classList.add("selected");
+sections.forEach(function(section) {
 
-  userType = type;
+document.getElementById(section)
+.classList.add("hidden");
 
-  const label = document.getElementById("mainLabel");
+});
 
-  if (type === "student") {
-    label.innerText = "学校";
-  }
+document.getElementById(id)
+.classList.remove("hidden");
 
-  if (type === "worker") {
-    label.innerText = "仕事";
-  }
-
-  if (type === "other") {
-    label.innerText = "主な予定";
-  }
-}
-
-
-function createRoutine() {
-
-  const type = userType || "other";
-
-  const activity = document.getElementById("mainActivity").value;
-
-  const goal = document.getElementById("otherGoal").value;
-
-  showPage("suggestion");
+window.scrollTo(0,0);
 
 }
 
 
-function changeRoutine() {
+function chooseType(element,type) {
 
-  const request =
-    document.getElementById("changeRequest").value.trim();
+document
+.querySelectorAll(".option")
+.forEach(function(option){
 
-  if (request === "") {
-    alert("変更したいことを入力してください。");
-    return;
-  }
+option.classList.remove("selected");
 
-  const reply = document.getElementById("aiReply");
+});
 
-  reply.classList.remove("hidden");
+element.classList.add("selected");
 
-  reply.innerHTML = `
-    <div class="ai-message">
-      🤖 わかりました！<br><br>
-      「${request}」をもとにルーティーンを調整しました。<br><br>
-      <b>新しい案</b><br>
-      自由時間や休憩時間を調整し、
-      重要な予定と睡眠時間をできるだけ維持する形にしました。
-    </div>
+userType = type;
 
-    <button onclick="showPage('final')">
-      この案で完成にする →
-    </button>
+if(type === "学生") {
 
-    <button class="secondary" onclick="document.getElementById('changeRequest').value=''">
-      もう一度変更する
-    </button>
-  `;
+document.getElementById("mainLabel")
+.innerText = "学校";
+
+}
+
+else if(type === "社会人") {
+
+document.getElementById("mainLabel")
+.innerText = "仕事";
+
+}
+
+else {
+
+document.getElementById("mainLabel")
+.innerText = "主な予定";
+
+}
+
+}
+
+
+function getGoals() {
+
+const checked =
+document.querySelectorAll(
+'.goal input:checked'
+);
+
+let goals = [];
+
+checked.forEach(function(item){
+
+goals.push(item.value);
+
+});
+
+const other =
+document.getElementById("otherGoal")
+.value.trim();
+
+if(other) {
+
+goals.push(other);
+
+}
+
+return goals;
+
+}
+
+
+async function callAI(message) {
+
+const response = await fetch(
+WORKER_URL,
+{
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+message:message
+})
+
+});
+
+const data = await response.json();
+
+if(!response.ok) {
+
+throw new Error(
+JSON.stringify(data.error)
+);
+
+}
+
+return data.answer;
+
+}
+
+
+async function generateRoutine() {
+
+show("result");
+
+document.getElementById("loading")
+.classList.remove("hidden");
+
+document.getElementById("resultText")
+.classList.add("hidden");
+
+const wake =
+document.getElementById("wake").value;
+
+const sleep =
+document.getElementById("sleep").value;
+
+const main =
+document.getElementById("mainSchedule").value;
+
+const commute =
+document.getElementById("commute").value;
+
+const activities =
+document.getElementById("activities").value;
+
+const goals =
+getGoals();
+
+const message = `
+
+Create a realistic weekly routine for this person.
+
+Type:
+${userType || "Not specified"}
+
+Wake up:
+${wake}
+
+Sleep:
+${sleep}
+
+School or work:
+${main}
+
+Commute:
+${commute}
+
+Current activities:
+${activities}
+
+Goals:
+${goals.join(", ")}
+
+Create a practical Monday-Sunday routine.
+
+Do not remove fixed commitments.
+
+Balance sleep, important responsibilities, exercise,
+study/work, hobbies and free time.
+
+Explain briefly why you made the changes.
+
+Write the schedule clearly in Japanese.
+`;
+
+
+try {
+
+const answer =
+await callAI(message);
+
+originalRoutine = answer;
+
+document.getElementById("resultText")
+.innerText = answer;
+
+document.getElementById("resultText")
+.classList.remove("hidden");
+
+}
+
+catch(error) {
+
+document.getElementById("resultText")
+.innerHTML =
+`<div class="error">
+AIに接続できませんでした。<br><br>
+${error.message}
+</div>`;
+
+document.getElementById("resultText")
+.classList.remove("hidden");
+
+}
+
+document.getElementById("loading")
+.classList.add("hidden");
+
+}
+
+
+async function reviseRoutine() {
+
+const change =
+document.getElementById("change")
+.value.trim();
+
+if(!change) {
+
+alert("変更したいことを入力してください。");
+
+return;
+
+}
+
+document.getElementById("chatLoading")
+.classList.remove("hidden");
+
+document.getElementById("revised")
+.classList.add("hidden");
+
+
+const message = `
+
+Here is the current weekly routine:
+
+${originalRoutine}
+
+The user wants to change it:
+
+${change}
+
+Create a revised weekly routine.
+
+Keep important fixed commitments.
+
+Only change what is necessary.
+
+Make the new routine realistic.
+
+Explain briefly what you changed.
+
+Write everything in Japanese.
+`;
+
+
+try {
+
+const answer =
+await callAI(message);
+
+originalRoutine = answer;
+
+document.getElementById("revised")
+.innerText = answer;
+
+document.getElementById("revised")
+.classList.remove("hidden");
+
+}
+
+catch(error) {
+
+document.getElementById("revised")
+.innerHTML =
+`<div class="error">
+AIに接続できませんでした。<br><br>
+${error.message}
+</div>`;
+
+document.getElementById("revised")
+.classList.remove("hidden");
+
+}
+
+document.getElementById("chatLoading")
+.classList.add("hidden");
 
 }
 
