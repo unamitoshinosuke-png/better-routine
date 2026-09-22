@@ -6,6 +6,8 @@
 
 <title>BetterRoutine</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 * {
   box-sizing: border-box;
@@ -14,32 +16,36 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #eaf4ff, #ffffff);
-  color: #1f2937;
+  background: #f4f7fb;
+  color: #172033;
 }
 
 .app {
-  max-width: 550px;
+  max-width: 620px;
   margin: auto;
-  min-height: 100vh;
-  padding: 25px 20px 50px;
+  padding: 25px 18px 60px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 25px;
 }
 
 .logo {
-  width: 70px;
-  height: 70px;
-  margin: 20px auto;
+  width: 72px;
+  height: 72px;
+  margin: 10px auto 15px;
   border-radius: 22px;
-  background: #2583e9;
+  background: #287be8;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
+  font-size: 34px;
 }
 
 h1 {
-  text-align: center;
+  margin: 5px 0;
   font-size: 30px;
 }
 
@@ -48,47 +54,48 @@ h2 {
 }
 
 .subtitle {
-  text-align: center;
-  color: #64748b;
+  color: #687386;
   line-height: 1.6;
 }
 
 .card {
   background: white;
   padding: 22px;
-  border-radius: 20px;
-  margin-top: 20px;
-  box-shadow: 0 5px 20px rgba(0,0,0,.08);
+  margin-top: 18px;
+  border-radius: 22px;
+  box-shadow: 0 6px 25px rgba(0,0,0,.07);
 }
 
 label {
   display: block;
-  font-weight: bold;
-  margin-top: 15px;
+  margin-top: 16px;
   margin-bottom: 7px;
+  font-weight: bold;
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   padding: 13px;
-  border: 1px solid #dbe3ec;
+  border: 1px solid #d8e0ea;
   border-radius: 12px;
   font-size: 15px;
+  background: white;
 }
 
 textarea {
-  min-height: 120px;
+  min-height: 110px;
   resize: vertical;
 }
 
 button {
   width: 100%;
-  border: 0;
+  border: none;
   border-radius: 14px;
   padding: 15px;
   margin-top: 18px;
-  background: #2583e9;
+  background: #287be8;
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -96,18 +103,23 @@ button {
 }
 
 button:hover {
-  background: #176dcc;
+  background: #1769cc;
+}
+
+.secondary {
+  background: #eaf2ff;
+  color: #1769cc;
 }
 
 .option-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3,1fr);
   gap: 10px;
 }
 
 .option {
-  padding: 16px;
-  border: 2px solid #e5e7eb;
+  padding: 15px 8px;
+  border: 2px solid #e1e7ef;
   border-radius: 15px;
   text-align: center;
   cursor: pointer;
@@ -115,36 +127,23 @@ button:hover {
 }
 
 .option.selected {
-  border-color: #2583e9;
-  background: #eaf4ff;
-  color: #2583e9;
+  border-color: #287be8;
+  background: #eaf2ff;
+  color: #287be8;
 }
 
 .goal {
+  display: block;
   padding: 13px;
-  margin: 8px 0;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e3e8ef;
   border-radius: 12px;
+  margin-top: 8px;
+  font-weight: normal;
 }
 
 .goal input {
   width: auto;
   margin-right: 8px;
-}
-
-.routine {
-  white-space: pre-wrap;
-  line-height: 1.8;
-  background: #f7fbff;
-  padding: 18px;
-  border-radius: 15px;
-}
-
-.ai {
-  background: #eef6ff;
-  padding: 16px;
-  border-radius: 15px;
-  line-height: 1.7;
 }
 
 .hidden {
@@ -154,13 +153,71 @@ button:hover {
 .loading {
   text-align: center;
   padding: 25px;
+  color: #64748b;
+}
+
+.routine {
+  white-space: pre-wrap;
+  line-height: 1.8;
+  background: #f7faff;
+  border-radius: 15px;
+  padding: 18px;
+}
+
+.chart-box {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  margin-top: 15px;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.stat {
+  background: #f5f8fc;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.stat-title {
+  color: #697386;
+  font-size: 13px;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.ai-box {
+  background: #edf6ff;
+  padding: 16px;
+  border-radius: 15px;
+  line-height: 1.7;
 }
 
 .error {
-  background: #fff1f1;
+  background: #fff0f0;
   color: #c62828;
   padding: 15px;
   border-radius: 12px;
+  line-height: 1.6;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #eaf2ff;
+  color: #287be8;
+  font-size: 13px;
+  font-weight: bold;
 }
 </style>
 </head>
@@ -173,24 +230,34 @@ button:hover {
 
 <section id="home">
 
+<header>
+
 <div class="logo">🌱</div>
 
 <h1>BetterRoutine</h1>
 
 <p class="subtitle">
-AIと一緒に、あなたに合った<br>
-1週間のルーティーンを作ろう。
+あなたの生活をAIが分析して、<br>
+もっと自分に合った週間ルーティーンを作ります。
 </p>
+
+</header>
 
 <div class="card">
 
+<h2>AI × Routine</h2>
+
 <p>
-今の生活を簡単に入力するだけ。<br>
-AIがあなたの生活を考えて、新しいルーティーンを提案します。
+今の生活を簡単に入力してください。
 </p>
 
-<button onclick="show('profile')">
-Get Started →
+<p>
+AIがあなたの生活を分析し、<br>
+時間配分をグラフで見せながら新しいルーティーンを提案します。
+</p>
+
+<button onclick="showPage('profile')">
+始める →
 </button>
 
 </div>
@@ -205,7 +272,7 @@ Get Started →
 <h1>あなたについて</h1>
 
 <p class="subtitle">
-まず、あなたの生活について教えてください。
+まず基本情報を入力してください。
 </p>
 
 <div class="card">
@@ -214,30 +281,37 @@ Get Started →
 
 <div class="option-grid">
 
-<div class="option"
-onclick="chooseType(this,'学生')">
+<div class="option" onclick="selectType(this,'学生')">
 🎒<br>学生
 </div>
 
-<div class="option"
-onclick="chooseType(this,'社会人')">
+<div class="option" onclick="selectType(this,'社会人')">
 💼<br>社会人
 </div>
 
-<div class="option"
-onclick="chooseType(this,'その他')">
+<div class="option" onclick="selectType(this,'その他')">
 🏠<br>その他
 </div>
 
 </div>
 
-<label>起きる時間</label>
-<input type="time" id="wake" value="06:30">
+<label>起床時間</label>
 
-<label>寝る時間</label>
-<input type="time" id="sleep" value="22:30">
+<input
+type="time"
+id="wake"
+value="06:30"
+>
 
-<button onclick="show('life')">
+<label>就寝時間</label>
+
+<input
+type="time"
+id="sleep"
+value="22:30"
+>
+
+<button onclick="showPage('life')">
 次へ →
 </button>
 
@@ -250,10 +324,10 @@ onclick="chooseType(this,'その他')">
 
 <section id="life" class="hidden">
 
-<h1>普段の生活</h1>
+<h1>今の生活</h1>
 
 <p class="subtitle">
-細かく入力しなくても大丈夫。
+ざっくり入力するだけでOK。
 </p>
 
 <div class="card">
@@ -264,15 +338,17 @@ onclick="chooseType(this,'その他')">
 
 <input
 id="mainSchedule"
-placeholder="例：学校 8:00〜15:30">
+placeholder="例：学校 8:00〜15:30"
+>
 
 <label>通学・通勤</label>
 
 <input
 id="commute"
-placeholder="例：片道30分">
+placeholder="例：片道30分"
+>
 
-<label>普段やっていること</label>
+<label>普段の予定</label>
 
 <textarea
 id="activities"
@@ -281,9 +357,11 @@ placeholder="例：
 宿題 毎日1時間
 ゲーム 1〜2時間
 夕食
-お風呂"></textarea>
+お風呂
+YouTube"
+></textarea>
 
-<button onclick="show('goals')">
+<button onclick="showPage('goals')">
 次へ →
 </button>
 
@@ -296,52 +374,53 @@ placeholder="例：
 
 <section id="goals" class="hidden">
 
-<h1>何を改善したい？</h1>
+<h1>改善したいこと</h1>
 
 <p class="subtitle">
-当てはまるものを選んでください。
+いくつ選んでもOK。
 </p>
 
 <div class="card">
 
 <label class="goal">
 <input type="checkbox" value="睡眠を増やす">
-😴 睡眠を増やしたい
+😴 睡眠を増やす
 </label>
 
 <label class="goal">
 <input type="checkbox" value="勉強時間を増やす">
-📚 勉強時間を増やしたい
+📚 勉強時間を増やす
 </label>
 
 <label class="goal">
-<input type="checkbox" value="運動する">
-🏃 運動する時間を増やしたい
+<input type="checkbox" value="運動時間を増やす">
+🏃 運動時間を増やす
 </label>
 
 <label class="goal">
 <input type="checkbox" value="自由時間を増やす">
-🎮 自由時間がほしい
+🎮 自由時間を増やす
 </label>
 
 <label class="goal">
 <input type="checkbox" value="スマホ時間を減らす">
-📱 スマホ時間を減らしたい
+📱 スマホ時間を減らす
 </label>
 
 <label class="goal">
-<input type="checkbox" value="朝を有効活用する">
-☀️ 朝の時間を有効にしたい
+<input type="checkbox" value="朝の時間を有効活用する">
+☀️ 朝の時間を有効活用する
 </label>
 
-<label>その他の希望</label>
+<label>その他</label>
 
 <textarea
 id="otherGoal"
-placeholder="例：もっと余裕のある生活にしたい"></textarea>
+placeholder="例：もっと余裕のある生活にしたい"
+></textarea>
 
-<button onclick="generateRoutine()">
-🤖 AIにルーティーンを作ってもらう
+<button onclick="createRoutine()">
+🤖 AIに分析してもらう
 </button>
 
 </div>
@@ -349,31 +428,113 @@ placeholder="例：もっと余裕のある生活にしたい"></textarea>
 </section>
 
 
-<!-- AI RESULT -->
+<!-- ANALYSIS -->
 
-<section id="result" class="hidden">
+<section id="analysis" class="hidden">
 
-<h1>🤖 AIの提案</h1>
-
-<p class="subtitle">
-あなたの生活をもとにAIが考えました。
-</p>
+<h1>生活を分析中</h1>
 
 <div class="card">
 
-<div id="loading" class="loading">
+<div class="loading">
 
-AIがルーティーンを考えています...<br>
-⏳
+🤖 AIがあなたの生活を分析しています...
+
+<br><br>
+
+少し待ってください。
 
 </div>
 
-<div id="resultText" class="routine hidden"></div>
+</div>
+
+</section>
+
+
+<!-- RESULT -->
+
+<section id="result" class="hidden">
+
+<header>
+
+<span class="badge">
+AI ANALYSIS
+</span>
+
+<h1>あなたの新しいRoutine</h1>
+
+<p class="subtitle">
+AIがあなたの生活をもとに考えました。
+</p>
+
+</header>
+
+
+<!-- CURRENT DATA -->
+
+<div class="card">
+
+<h2>📊 今の生活</h2>
+
+<p class="subtitle">
+入力された情報から作った時間配分です。
+</p>
+
+<div class="chart-box">
+<canvas id="currentChart"></canvas>
+</div>
+
+<div class="stat-grid">
+
+<div class="stat">
+<div class="stat-title">睡眠</div>
+<div class="stat-value" id="sleepStat">-</div>
+</div>
+
+<div class="stat">
+<div class="stat-title">自由時間</div>
+<div class="stat-value" id="freeStat">-</div>
+</div>
 
 </div>
 
-<button onclick="show('chat')">
-💬 このルーティーンについて相談する
+</div>
+
+
+<!-- AI ROUTINE -->
+
+<div class="card">
+
+<h2>🤖 AIの提案</h2>
+
+<div id="routineLoading" class="loading">
+AIがルーティーンを作っています...
+</div>
+
+<div id="routineText" class="routine hidden"></div>
+
+</div>
+
+
+<!-- AI DATA -->
+
+<div class="card hidden" id="aiDataCard">
+
+<h2>📈 AI提案後の時間配分</h2>
+
+<p class="subtitle">
+現在の生活と比較できます。
+</p>
+
+<div class="chart-box">
+<canvas id="aiChart"></canvas>
+</div>
+
+</div>
+
+
+<button onclick="showPage('chat')">
+💬 このRoutineについて相談する
 </button>
 
 </section>
@@ -386,20 +547,25 @@ AIがルーティーンを考えています...<br>
 <h1>AIと相談</h1>
 
 <p class="subtitle">
-「ここを変えたい」と自由に伝えてください。
+気になるところを自由に伝えてください。
 </p>
 
 <div class="card">
 
-<div class="ai">
+<div class="ai-box">
 
 🤖 例えば、
 
-「ゲームの時間を増やしたい」<br>
-「もっと早く寝たい」<br>
-「勉強時間を30分増やしたい」
+<br><br>
 
-など、普通に話しかけてOKです。
+「ゲームをもう少し増やしたい」<br>
+「もっと早く寝たい」<br>
+「勉強時間を30分増やしたい」<br>
+「運動を増やしたい」
+
+<br><br>
+
+など、普通に話しかけてください。
 
 </div>
 
@@ -407,19 +573,26 @@ AIがルーティーンを考えています...<br>
 
 <textarea
 id="change"
-placeholder="例：自由時間をもう少し増やしたい"></textarea>
+placeholder="例：自由時間をもう少し増やしてほしい"
+></textarea>
 
 <button onclick="reviseRoutine()">
 AIに修正してもらう
 </button>
 
-<div id="chatLoading"
-class="loading hidden">
-AIがルーティーンを修正しています...<br>
-⏳
+<div id="chatLoading" class="loading hidden">
+
+🤖 AIが修正しています...
+
 </div>
 
-<div id="revised" class="routine hidden"></div>
+<div id="revisedBox" class="hidden">
+
+<h2>新しい提案</h2>
+
+<div id="revisedText" class="routine"></div>
+
+</div>
 
 </div>
 
@@ -437,26 +610,35 @@ let userType = "";
 
 let originalRoutine = "";
 
+let currentChart = null;
 
-function show(id) {
+let aiChart = null;
 
-const sections = [
+
+/* PAGE */
+
+function showPage(page) {
+
+const pages = [
 "home",
 "profile",
 "life",
 "goals",
+"analysis",
 "result",
 "chat"
 ];
 
-sections.forEach(function(section) {
+pages.forEach(function(id){
 
-document.getElementById(section)
+document
+.getElementById(id)
 .classList.add("hidden");
 
 });
 
-document.getElementById(id)
+document
+.getElementById(page)
 .classList.remove("hidden");
 
 window.scrollTo(0,0);
@@ -464,7 +646,9 @@ window.scrollTo(0,0);
 }
 
 
-function chooseType(element,type) {
+/* TYPE */
+
+function selectType(element,type) {
 
 document
 .querySelectorAll(".option")
@@ -502,6 +686,8 @@ document.getElementById("mainLabel")
 }
 
 
+/* GOALS */
+
 function getGoals() {
 
 const checked =
@@ -532,11 +718,14 @@ return goals;
 }
 
 
+/* AI */
+
 async function callAI(message) {
 
 const response = await fetch(
 WORKER_URL,
 {
+
 method:"POST",
 
 headers:{
@@ -549,7 +738,8 @@ message:message
 
 });
 
-const data = await response.json();
+const data =
+await response.json();
 
 if(!response.ok) {
 
@@ -564,15 +754,179 @@ return data.answer;
 }
 
 
-async function generateRoutine() {
+/* TIME */
 
-show("result");
+function timeToMinutes(time) {
 
-document.getElementById("loading")
-.classList.remove("hidden");
+const parts = time.split(":");
 
-document.getElementById("resultText")
-.classList.add("hidden");
+return (
+Number(parts[0]) * 60 +
+Number(parts[1])
+);
+
+}
+
+
+function getSleepHours() {
+
+const wake =
+document.getElementById("wake").value;
+
+const sleep =
+document.getElementById("sleep").value;
+
+let wakeMin =
+timeToMinutes(wake);
+
+let sleepMin =
+timeToMinutes(sleep);
+
+if(sleepMin >= wakeMin) {
+
+sleepMin -= 24 * 60;
+
+}
+
+return (
+(wakeMin - sleepMin) / 60
+);
+
+}
+
+
+/* CURRENT CHART */
+
+function createCurrentChart() {
+
+const sleep =
+Math.round(
+getSleepHours() * 10
+) / 10;
+
+const mainText =
+document
+.getElementById("mainSchedule")
+.value;
+
+const activities =
+document
+.getElementById("activities")
+.value;
+
+
+/*
+学校・仕事の時間をざっくり推定。
+入力に「8:00〜15:30」のような時間が
+あれば自動計算。
+*/
+
+let mainHours = 7;
+
+const match =
+mainText.match(
+/(\d{1,2}):?(\d{0,2})\s*[〜~\-]\s*(\d{1,2}):?(\d{0,2})/
+);
+
+if(match) {
+
+const start =
+Number(match[1]) * 60 +
+Number(match[2] || 0);
+
+const end =
+Number(match[3]) * 60 +
+Number(match[4] || 0);
+
+mainHours =
+(end - start) / 60;
+
+if(mainHours < 0) {
+mainHours += 24;
+}
+
+}
+
+
+/*
+その他の時間をざっくり計算
+*/
+
+let free =
+24 - sleep - mainHours;
+
+if(free < 0) {
+free = 1;
+}
+
+free =
+Math.round(free * 10) / 10;
+
+document.getElementById("sleepStat")
+.innerText = sleep + "h";
+
+document.getElementById("freeStat")
+.innerText = free + "h";
+
+
+if(currentChart) {
+currentChart.destroy();
+}
+
+currentChart =
+new Chart(
+document.getElementById("currentChart"),
+{
+
+type:"doughnut",
+
+data:{
+
+labels:[
+"睡眠",
+"学校・仕事",
+"その他・自由時間"
+],
+
+datasets:[{
+
+data:[
+sleep,
+mainHours,
+free
+]
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+position:"bottom"
+}
+
+}
+
+}
+
+}
+);
+
+}
+
+
+/* CREATE ROUTINE */
+
+async function createRoutine() {
+
+showPage("analysis");
 
 const wake =
 document.getElementById("wake").value;
@@ -592,42 +946,78 @@ document.getElementById("activities").value;
 const goals =
 getGoals();
 
+
 const message = `
 
-Create a realistic weekly routine for this person.
+あなたはBetterRoutineという生活設計AIです。
 
-Type:
-${userType || "Not specified"}
+以下のユーザー情報から、
+現実的な月曜日〜日曜日の週間ルーティーンを作ってください。
 
-Wake up:
+【ユーザー】
+タイプ：
+${userType || "未入力"}
+
+起床：
 ${wake}
 
-Sleep:
+就寝：
 ${sleep}
 
-School or work:
+学校・仕事：
 ${main}
 
-Commute:
+通学・通勤：
 ${commute}
 
-Current activities:
+現在の予定：
 ${activities}
 
-Goals:
-${goals.join(", ")}
+改善したいこと：
+${goals.join("、")}
 
-Create a practical Monday-Sunday routine.
+重要：
+・固定予定は勝手に削除しない
+・睡眠を確保する
+・勉強/仕事、運動、趣味、自由時間をバランスよくする
+・現実的な時間配分にする
+・ユーザーが実際に続けられる内容にする
 
-Do not remove fixed commitments.
+最初に「この人の生活で改善できそうなポイント」を短く説明してください。
 
-Balance sleep, important responsibilities, exercise,
-study/work, hobbies and free time.
+その後、
 
-Explain briefly why you made the changes.
+月曜日
+火曜日
+水曜日
+木曜日
+金曜日
+土曜日
+日曜日
 
-Write the schedule clearly in Japanese.
+の順番で週間スケジュールを作ってください。
+
+最後に、
+
+睡眠
+学校・仕事
+勉強
+運動
+趣味
+自由時間
+その他
+
+の1日平均時間を、
+
+「睡眠: 8時間」
+
+のような形式で書いてください。
+
+日本語で回答してください。
 `;
+
+
+createCurrentChart();
 
 
 try {
@@ -635,78 +1025,241 @@ try {
 const answer =
 await callAI(message);
 
-originalRoutine = answer;
+originalRoutine =
+answer;
 
-document.getElementById("resultText")
+
+/*
+分析画面を結果画面に変更
+*/
+
+showPage("result");
+
+
+document
+.getElementById("routineLoading")
+.classList.add("hidden");
+
+
+document
+.getElementById("routineText")
 .innerText = answer;
 
-document.getElementById("resultText")
+
+document
+.getElementById("routineText")
 .classList.remove("hidden");
+
+
+/*
+AIの時間データを探す
+*/
+
+createAIChart(answer);
 
 }
 
 catch(error) {
 
-document.getElementById("resultText")
+showPage("result");
+
+document
+.getElementById("routineLoading")
 .innerHTML =
 `<div class="error">
 AIに接続できませんでした。<br><br>
 ${error.message}
 </div>`;
 
-document.getElementById("resultText")
-.classList.remove("hidden");
+}
 
 }
 
-document.getElementById("loading")
+
+/* AI CHART */
+
+function createAIChart(text) {
+
+/*
+AIの回答から
+「睡眠: 8時間」
+などを探す
+*/
+
+const categories = [
+"睡眠",
+"学校・仕事",
+"勉強",
+"運動",
+"趣味",
+"自由時間",
+"その他"
+];
+
+let values = [];
+
+categories.forEach(function(category){
+
+const regex =
+new RegExp(
+category +
+"\\s*[:：]\\s*(\\d+(?:\\.\\d+)?)\\s*時間?"
+);
+
+const match =
+text.match(regex);
+
+if(match) {
+
+values.push(
+Number(match[1])
+);
+
+}
+
+else {
+
+values.push(0);
+
+}
+
+});
+
+
+/*
+少なくとも1個データがあれば表示
+*/
+
+const total =
+values.reduce(
+(a,b) => a+b,
+0
+);
+
+if(total <= 0) {
+
+document
+.getElementById("aiDataCard")
 .classList.add("hidden");
-
-}
-
-
-async function reviseRoutine() {
-
-const change =
-document.getElementById("change")
-.value.trim();
-
-if(!change) {
-
-alert("変更したいことを入力してください。");
 
 return;
 
 }
 
-document.getElementById("chatLoading")
+
+document
+.getElementById("aiDataCard")
 .classList.remove("hidden");
 
-document.getElementById("revised")
+
+if(aiChart) {
+aiChart.destroy();
+}
+
+
+aiChart =
+new Chart(
+document.getElementById("aiChart"),
+{
+
+type:"doughnut",
+
+data:{
+
+labels:categories,
+
+datasets:[{
+
+data:values
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+position:"bottom"
+}
+
+}
+
+}
+
+}
+);
+
+}
+
+
+/* REVISE */
+
+async function reviseRoutine() {
+
+const change =
+document
+.getElementById("change")
+.value.trim();
+
+if(!change) {
+
+alert(
+"変更したいことを入力してください。"
+);
+
+return;
+
+}
+
+
+document
+.getElementById("chatLoading")
+.classList.remove("hidden");
+
+
+document
+.getElementById("revisedBox")
 .classList.add("hidden");
 
 
 const message = `
 
-Here is the current weekly routine:
+現在のBetterRoutine案：
 
 ${originalRoutine}
 
-The user wants to change it:
+ユーザーからの変更希望：
 
 ${change}
 
-Create a revised weekly routine.
+この希望を反映して、
+週間ルーティーンを作り直してください。
 
-Keep important fixed commitments.
+重要：
+・固定予定は維持
+・変更希望を優先
+・睡眠など重要な時間を確保
+・無理のないスケジュール
+・月曜日〜日曜日まで作る
+・最後に時間配分を
 
-Only change what is necessary.
+睡眠: ○時間
+学校・仕事: ○時間
+勉強: ○時間
+運動: ○時間
+趣味: ○時間
+自由時間: ○時間
+その他: ○時間
 
-Make the new routine realistic.
+の形式で書く。
 
-Explain briefly what you changed.
-
-Write everything in Japanese.
+日本語で回答してください。
 `;
 
 
@@ -715,31 +1268,45 @@ try {
 const answer =
 await callAI(message);
 
-originalRoutine = answer;
 
-document.getElementById("revised")
-.innerText = answer;
+originalRoutine =
+answer;
 
-document.getElementById("revised")
+
+document
+.getElementById("revisedText")
+.innerText =
+answer;
+
+
+document
+.getElementById("revisedBox")
 .classList.remove("hidden");
+
+
+createAIChart(answer);
 
 }
 
 catch(error) {
 
-document.getElementById("revised")
+document
+.getElementById("revisedText")
 .innerHTML =
 `<div class="error">
 AIに接続できませんでした。<br><br>
 ${error.message}
 </div>`;
 
-document.getElementById("revised")
+document
+.getElementById("revisedBox")
 .classList.remove("hidden");
 
 }
 
-document.getElementById("chatLoading")
+
+document
+.getElementById("chatLoading")
 .classList.add("hidden");
 
 }
